@@ -1,13 +1,17 @@
 package kr.or.dgit.bigdata.easybuy;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,33 @@ public class MainActivity extends AppCompatActivity {
 
         TextView mainText = (TextView) findViewById(R.id.mainText);
         mainText.setText(builder);
+
+        ImageView mainLogo = (ImageView) findViewById(R.id.mainLogo);
+
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.main_anim);
+        anim.setFillAfter(true);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        mainText.startAnimation(anim);
+        mainLogo.startAnimation(anim);
+
 
     }
 }

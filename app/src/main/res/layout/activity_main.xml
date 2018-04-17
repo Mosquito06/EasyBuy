@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     tools:context="kr.or.dgit.bigdata.easybuy.MainActivity">
 
     <RelativeLayout
-        android:layout_marginTop="210dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/mainLogo"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="164dp"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="165dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/logo" />
 
             <TextView
@@ -27,9 +26,7 @@
                 android:textSize="40sp"
                 android:textColor="#000"
                 android:text="EASYBUY"
-                android:layout_marginLeft="30dp"
-                android:fontFamily="@font/nanumsquareroundeb"
-                android:layout_below="@+id/mainLogo"/>
+                android:fontFamily="@font/nanumsquareroundeb"/>
 
     </RelativeLayout>
 
