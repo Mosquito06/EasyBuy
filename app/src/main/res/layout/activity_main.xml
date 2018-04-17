@@ -4,15 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     tools:context="kr.or.dgit.bigdata.easybuy.MainActivity">
 
-    <TextView
-        android:id="@+id/mainText"
+    <RelativeLayout
+        android:layout_marginTop="210dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:text="EASYBUY"
-        android:fontFamily="@font/nanumsquareroundeb"/>
+        android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/mainLogo"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="164dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/mainText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+                android:textColor="#000"
+                android:text="EASYBUY"
+                android:layout_marginLeft="30dp"
+                android:fontFamily="@font/nanumsquareroundeb"
+                android:layout_below="@+id/mainLogo"/>
+
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>
