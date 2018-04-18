@@ -1,4 +1,4 @@
-package kr.or.dgit.bigdata.easybuy;
+package kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import kr.or.dgit.bigdata.easybuy.R;
 
 /**
  * Created by DGIT3-12 on 2018-04-18.

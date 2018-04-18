@@ -1,11 +1,12 @@
-package kr.or.dgit.bigdata.easybuy;
+package kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,6 +27,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import kr.or.dgit.bigdata.easybuy.R;
+import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.dto.User;
 
 /**
  * Created by DGIT3-12 on 2018-04-18.
@@ -121,10 +129,48 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            TextView result = (TextView)getView().findViewById(R.id.resultText);
-            result.setText(s);
+        protected void onPostExecute(String result) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            try {
+                JSONObject object = new JSONObject(result);
+                if(object.getString("result").equals("not exist")){
+                    setAlert(builder, "존재하지 않는 아이디입니다.");
+                }else if(object.getString("result").equals("pw error")){
+                    setAlert(builder, "잘못된 비밀번호 입니다.");
+                }else if(object.getString("result").equals("error")){
+                    setAlert(builder, "잠시 후 다시 시도해주세요.");
+                }else{
+                    JSONObject user = new JSONObject(object.getString("loginUser"));
+                    User loginUser = new User();
+                    loginUser.clientNum = user.getInt("clientNum");
+                    loginUser.id = user.getString("id");
+                    loginUser.name = user.getString("name");
+                    loginUser.email = user.getString("email");
+                    loginUser.phone = user.getString("phone");
+                    loginUser.homeTel = user.getString("homeTel");
+                    loginUser.address = user.getString("address");
+
+                    AlertDialog.Builder success = setAlert(builder, loginUser.name + "님 환영합니다.");
+
+                }
+
+                builder.create().show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
+        private AlertDialog.Builder setAlert(AlertDialog.Builder builder, String message){
+            builder.setIcon(R.drawable.alert);
+            builder.setTitle("Alert");
+            builder.setMessage(message);
+            builder.setPositiveButton("OK", null);
+
+            return builder;
+        }
+
     }
 
 }
