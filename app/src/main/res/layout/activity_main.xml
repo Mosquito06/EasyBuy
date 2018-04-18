@@ -1,36 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:id="@+id/mainLayoutFrame"
     tools:context="kr.or.dgit.bigdata.easybuy.MainActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/mainLogo"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="165dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/logo" />
-
-            <TextView
-                android:id="@+id/mainText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:textColor="#000"
-                android:text="EASYBUY"
-                android:fontFamily="@font/nanumsquareroundeb"/>
-
-    </RelativeLayout>
-
-
-
-
-</LinearLayout>
+</FrameLayout>
