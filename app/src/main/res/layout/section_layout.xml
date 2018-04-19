@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/section_name"
+        android:text="야야"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquareroundeb"
+        android:textSize="13sp"
+        android:layout_margin="10dp"
+        android:textColor="@color/blackColor"/>
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#8d8d8d"/>
+
+</LinearLayout>

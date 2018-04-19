@@ -2,6 +2,7 @@ package kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import kr.or.dgit.bigdata.easybuy.Main_Activity;
 import kr.or.dgit.bigdata.easybuy.R;
 import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.dto.User;
 
@@ -79,6 +81,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     private class LoginRequestTask extends AsyncTask<String, Void, String>{
+        User loginUser = null;
+
         @Override
         protected String doInBackground(String... strings) {
             StringBuffer sb = new StringBuffer();
@@ -142,7 +146,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     setAlert(builder, "잠시 후 다시 시도해주세요.");
                 }else{
                     JSONObject user = new JSONObject(object.getString("loginUser"));
-                    User loginUser = new User();
+                    loginUser = new User();
                     loginUser.clientNum = user.getInt("clientNum");
                     loginUser.id = user.getString("id");
                     loginUser.name = user.getString("name");
@@ -152,7 +156,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     loginUser.address = user.getString("address");
 
                     AlertDialog.Builder success = setAlert(builder, loginUser.name + "님 환영합니다.");
-
+                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(loginUser != null){
+                                Intent intent = new Intent();
+                                intent.setClass(getActivity(), Main_Activity.class);
+                                intent.putExtra("userNum", loginUser.clientNum);
+                                intent.putExtra("userId", loginUser.id);
+                                intent.putExtra("userName", loginUser.name);
+                                intent.putExtra("userPhone", loginUser.phone);
+                                intent.putExtra("userAddress", loginUser.address);
+                                startActivity(intent);
+                            }
+                        }
+                    });
                 }
 
                 builder.create().show();
@@ -160,13 +178,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         private AlertDialog.Builder setAlert(AlertDialog.Builder builder, String message){
             builder.setIcon(R.drawable.alert);
             builder.setTitle("Alert");
             builder.setMessage(message);
             builder.setPositiveButton("OK", null);
+            builder.setCancelable(false);
 
             return builder;
         }

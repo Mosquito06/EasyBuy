@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:id="@+id/mainLayoutFrame"
-    tools:context="kr.or.dgit.bigdata.easybuy.MainActivity">
+    tools:context="kr.or.dgit.bigdata.easybuy.StartActivity">
 
 
 </FrameLayout>

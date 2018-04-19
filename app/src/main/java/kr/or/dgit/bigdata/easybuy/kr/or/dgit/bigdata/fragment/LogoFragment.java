@@ -33,7 +33,7 @@ public class LogoFragment extends Fragment implements Animation.AnimationListene
         if(start > -1){
             int end = start + "BUY".length();
 
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.maingTextColor));
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.mainTextColor));
 
             builder.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }

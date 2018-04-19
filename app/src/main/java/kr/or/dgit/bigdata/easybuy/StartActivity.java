@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment.LogoFragment;
 
-public class MainActivity extends AppCompatActivity{
+public class StartActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

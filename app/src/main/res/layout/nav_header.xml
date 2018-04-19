@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <ImageView
+        android:id="@+id/nav_logo"
+        android:src="@drawable/logo"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/nav_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nav_id"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="11sp"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/nav_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="11sp"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#8d8d8d"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>
