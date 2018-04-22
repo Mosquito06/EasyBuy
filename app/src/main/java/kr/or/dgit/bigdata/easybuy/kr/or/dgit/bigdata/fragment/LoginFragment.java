@@ -31,6 +31,7 @@ import java.net.URL;
 
 import kr.or.dgit.bigdata.easybuy.Main_Activity;
 import kr.or.dgit.bigdata.easybuy.R;
+import kr.or.dgit.bigdata.easybuy.StartActivity;
 import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.dto.User;
 
 /**
@@ -90,7 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             HttpURLConnection connection = null;
             String line = null;
             try{
-                URL url = new URL("http://192.168.0.49:8080/saproject/android/login");
+                URL url = new URL(StartActivity.CONTEXTPATH + "/android/login");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);

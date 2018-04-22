@@ -7,6 +7,8 @@ import android.os.Bundle;
 import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment.LogoFragment;
 
 public class StartActivity extends AppCompatActivity{
+    public static final String CONTEXTPATH = "http://192.168.0.8:8080/saproject";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
