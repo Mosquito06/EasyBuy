@@ -9,6 +9,7 @@
     tools:context="kr.or.dgit.bigdata.easybuy.Main_Activity">
 
     <RelativeLayout
+        android:id="@+id/main_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

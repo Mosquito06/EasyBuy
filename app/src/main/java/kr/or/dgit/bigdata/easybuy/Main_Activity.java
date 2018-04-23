@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -203,7 +206,10 @@ public class Main_Activity extends AppCompatActivity {
                         ItemVO item = menu.get(position);
                         if(item.getType() == ItemVO.TYPE_SECTION){
                             section section = (section) item;
-                            Toast.makeText(Main_Activity.this, section.sectionNum + "", Toast.LENGTH_SHORT).show();
+                            new setBoardAsynTask().execute(section.sectionNum);
+                            if(drawer.isDrawerOpen(GravityCompat.START)){
+                                drawer.closeDrawer(GravityCompat.START);
+                            }
                         }
 
                     }
@@ -220,36 +226,9 @@ public class Main_Activity extends AppCompatActivity {
     // 로그인 시 데이터를 가져오기 위한 asyctask 작성
     private class menuAsycTask extends AsyncTask<Integer, Void, String>{
         @Override
-        protected String doInBackground(Integer... strings) {
-            StringBuffer sb = new StringBuffer();
-            BufferedReader br = null;
-            HttpURLConnection connection = null;
-            String line = null;
-            try{
-                URL url = new URL(StartActivity.CONTEXTPATH + "/android/menu?clientNum=" + strings[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                if(connection != null){
-                    if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    }
-                }
-
-            while((line = br.readLine()) != null){
-                sb.append(line);
-            }
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
-            try {
-                br.close();
-                connection.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        protected String doInBackground(Integer... integers) {
+            String MappginPath = StartActivity.CONTEXTPATH + "/android/menu?clientNum=";
+            StringBuffer sb = getStringBuffer(MappginPath, integers[0]);
 
             return sb.toString();
         }
@@ -276,7 +255,6 @@ public class Main_Activity extends AppCompatActivity {
                                 JSONObject section_division = getSection.getJSONObject("division");
                                 int section_division_num = section_division.getInt("divisionNum");
                                 if(divisionNum == section_division_num){
-                                    // Log.d("info", getSection.getString("sectionName") + " : " + getSection.getInt("sectionNum"));
                                     menuList.add(new section(getSection.getString("sectionName"), getSection.getInt("sectionNum")));
                                 }
                             }
@@ -284,51 +262,7 @@ public class Main_Activity extends AppCompatActivity {
                     }
                 }
 
-
-
-                if(board != null){
-                    ArrayList<board> data = new ArrayList<>();
-
-                    for(int i = 0; i < board.length(); i++){
-                        JSONObject boardObj = board.getJSONObject(i);
-                        Log.d("boardObj", boardObj.toString());
-
-                        board boardData = new board();
-                        boardData.boardNum = boardObj.getInt("boardNum");
-                        boardData.boardTotal = boardObj.getInt("boardTotalCount");
-                        boardData.boardView = boardObj.getInt("boardCount");
-                        boardData.boardTitle = boardObj.getString("boardTitle");
-                        boardData.boardRegdate = new Date(boardObj.getLong("boardDate"));
-                        boardData.boardPrice = boardObj.getInt("boardPrice");
-
-                        JSONObject user = boardObj.getJSONObject("clientNum");
-                        boardData.boardWriter = user.getString("name");
-
-
-                        try{
-                            JSONArray filesArray = boardObj.getJSONArray("files");
-
-                            if(filesArray.length() > 0){
-                                JSONObject file = filesArray.getJSONObject(0);
-                                boardData.imgPath = file.getString("filePath");
-                                Log.d("imgPath", boardData.imgPath);
-                            }
-                        }catch (JSONException e){
-                            Log.d("타입에러", e.getMessage());
-                        }
-
-                        data.add(boardData);
-                    }
-
-                    RecyclerView mainRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerView);
-
-                    boardAdapter board_adapter = new boardAdapter(data);
-                    mainRecyclerView.setAdapter(board_adapter);
-
-                    GridLayoutManager boardManager = new GridLayoutManager(Main_Activity.this, 2);
-                    mainRecyclerView.setLayoutManager(boardManager);
-
-                }
+                setBoardAdapter(board);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -431,6 +365,139 @@ public class Main_Activity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return data.size();
+        }
+    }
+
+    private class setBoardAsynTask extends AsyncTask<Integer ,Void, String>{
+        @Override
+        protected String doInBackground(Integer... integers) {
+            String MappginPath = StartActivity.CONTEXTPATH + "/android/board?sectionNum=";
+            StringBuffer sb = getStringBuffer(MappginPath, integers[0]);
+
+            return sb.toString();
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject obj = new JSONObject(result);
+                JSONArray board = obj.getJSONArray("board");
+                setBoardAdapter(board);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    private StringBuffer getStringBuffer(String MappginPath, Integer value) {
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        HttpURLConnection connection = null;
+        String line = null;
+        try{
+            URL url = new URL(MappginPath + value);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            if(connection != null){
+                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                }
+            }
+
+            while((line = br.readLine()) != null){
+                sb.append(line);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                br.close();
+                connection.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb;
+    }
+
+    private void setBoardAdapter(JSONArray board) throws JSONException {
+        RecyclerView mainRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerView);
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main_relativeLayout);
+        TextView noneBoardTextView = (TextView) findViewById(R.id.noneBoardText);
+
+
+        if(board.length() > 0){
+            if(mainRecyclerView == null){
+                relativeLayout.removeView(noneBoardTextView);
+
+                mainRecyclerView = new RecyclerView(Main_Activity.this);
+                mainRecyclerView.setId(R.id.main_recyclerView);
+
+                RelativeLayout.LayoutParams recyclerViewLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                recyclerViewLayout.addRule(RelativeLayout.BELOW, R.id.main_toolbar);
+                mainRecyclerView.setLayoutParams(recyclerViewLayout);
+
+                relativeLayout.addView(mainRecyclerView);
+            }
+
+            ArrayList<Main_Activity.board> data = new ArrayList<>();
+
+            for(int i = 0; i < board.length(); i++){
+                JSONObject boardObj = board.getJSONObject(i);
+                Log.d("boardObj", boardObj.toString());
+
+                Main_Activity.board boardData = new board();
+                boardData.boardNum = boardObj.getInt("boardNum");
+                boardData.boardTotal = boardObj.getInt("boardTotalCount");
+                boardData.boardView = boardObj.getInt("boardCount");
+                boardData.boardTitle = boardObj.getString("boardTitle");
+                boardData.boardRegdate = new Date(boardObj.getLong("boardDate"));
+                boardData.boardPrice = boardObj.getInt("boardPrice");
+
+                JSONObject user = boardObj.getJSONObject("clientNum");
+                boardData.boardWriter = user.getString("name");
+
+
+                try{
+                    JSONArray filesArray = boardObj.getJSONArray("files");
+
+                    if(filesArray.length() > 0){
+                        JSONObject file = filesArray.getJSONObject(0);
+                        boardData.imgPath = file.getString("filePath");
+                        Log.d("imgPath", boardData.imgPath);
+                    }
+                }catch (JSONException e){
+                    Log.d("타입에러", e.getMessage());
+                }
+
+                data.add(boardData);
+            }
+
+            boardAdapter board_adapter = new boardAdapter(data);
+            mainRecyclerView.setAdapter(board_adapter);
+
+            GridLayoutManager boardManager = new GridLayoutManager(Main_Activity.this, 2);
+            mainRecyclerView.setLayoutManager(boardManager);
+
+        }else{
+            relativeLayout.removeView(mainRecyclerView);
+            TextView textView = new TextView(Main_Activity.this);
+            textView.setId(R.id.noneBoardText);
+            textView.setText("등록된 게시물이 존재하지 않습니다.");
+            textView.setTextColor(getResources().getColor(R.color.blackColor));
+
+            RelativeLayout.LayoutParams textViewLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            textViewLayout.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            textView.setLayoutParams(textViewLayout);
+
+            relativeLayout.addView(textView);
+
         }
     }
 
