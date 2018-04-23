@@ -227,7 +227,7 @@ public class Main_Activity extends AppCompatActivity {
     private class menuAsycTask extends AsyncTask<Integer, Void, String>{
         @Override
         protected String doInBackground(Integer... integers) {
-            String MappginPath = StartActivity.CONTEXTPATH + "/android/menu?clientNum=";
+            String MappginPath = StartActivity.CONTEXTPATH + "/android/menu/";
             StringBuffer sb = getStringBuffer(MappginPath, integers[0]);
 
             return sb.toString();
@@ -371,7 +371,7 @@ public class Main_Activity extends AppCompatActivity {
     private class setBoardAsynTask extends AsyncTask<Integer ,Void, String>{
         @Override
         protected String doInBackground(Integer... integers) {
-            String MappginPath = StartActivity.CONTEXTPATH + "/android/board?sectionNum=";
+            String MappginPath = StartActivity.CONTEXTPATH + "/android/board/";
             StringBuffer sb = getStringBuffer(MappginPath, integers[0]);
 
             return sb.toString();
