@@ -32,18 +32,11 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <TextView
-            android:id="@+id/test_text"
-            android:text="zz"
-            android:layout_below="@+id/main_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/test_img"
-            android:layout_below="@+id/test_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/main_toolbar"/>
 
     </RelativeLayout>
 

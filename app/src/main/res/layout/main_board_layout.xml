@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/board_img"
+        android:src="@drawable/kl"
+        android:layout_width="160dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/board_total"
+        android:layout_below="@+id/board_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="총 주문수량: 0"
+        android:textSize="10sp"
+        android:textColor="@color/blackColor"
+        android:layout_alignParentLeft="true"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_view"
+        android:layout_below="@+id/board_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="조회수: 0"
+        android:textSize="10sp"
+        android:textColor="@color/blackColor"
+        android:layout_alignParentRight="true"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#8d8d8d"
+        android:layout_below="@+id/board_total"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/board_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/board_border"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/blackColor"
+        android:textSize="10sp"
+        android:text="제목: 최고 인기 상품!!"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/board_title"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="10sp"
+        android:text="등록날짜: 2018-04-17"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/board_date"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="10sp"
+        android:text="가격: 30,000 원"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/board_price"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="10sp"
+        android:text="등록: 김동환"
+        android:fontFamily="@font/nanumsquareroundb"/>
+
+    <TextView
+        android:id="@+id/board_bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#8d8d8d"
+        android:layout_below="@+id/board_writer"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/board_show_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/board_bottom_border"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/blackColor"
+        android:textSize="10sp"
+        android:text="주문내역 확인 >>> "
+        android:fontFamily="@font/nanumsquareroundb"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

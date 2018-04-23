@@ -1,7 +1,7 @@
 package kr.or.dgit.bigdata.easybuy;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +41,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -88,6 +92,7 @@ public class Main_Activity extends AppCompatActivity {
 
     }
 
+    // nav 버튼 활성화
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(toggle.onOptionsItemSelected(item)){
@@ -97,6 +102,7 @@ public class Main_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // memu의 데이터를 담을 클래스 생성
     private abstract class ItemVO{
         public static final int TYPE_DIVISION = 0;
         public static final int TYPE_SECTION = 1;
@@ -118,9 +124,11 @@ public class Main_Activity extends AppCompatActivity {
 
     private class section extends ItemVO{
         String sectionName;
+        int sectionNum;
 
-        public section(String sectionName) {
+        public section(String sectionName, int sectionNum) {
             this.sectionName = sectionName;
+            this.sectionNum = sectionNum;
         }
 
         @Override
@@ -129,6 +137,8 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
+
+    // recycleview viewholder 작성
     private class divisionViewHolder extends RecyclerView.ViewHolder{
         TextView divisionText;
 
@@ -142,13 +152,13 @@ public class Main_Activity extends AppCompatActivity {
     private class sectionViewHolder extends RecyclerView.ViewHolder{
         TextView sectionText;
 
-
         public sectionViewHolder(View itemView) {
             super(itemView);
             sectionText = (TextView) itemView.findViewById(R.id.section_name);
         }
     }
 
+    // recycleview adapter 작성
     private class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         ArrayList<ItemVO> menu;
 
@@ -190,8 +200,12 @@ public class Main_Activity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // 메뉴 이벤트 설정
+                        ItemVO item = menu.get(position);
+                        if(item.getType() == ItemVO.TYPE_SECTION){
+                            section section = (section) item;
+                            Toast.makeText(Main_Activity.this, section.sectionNum + "", Toast.LENGTH_SHORT).show();
+                        }
 
-                        Toast.makeText(Main_Activity.this, "position : " + position , Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -203,6 +217,7 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
+    // 로그인 시 데이터를 가져오기 위한 asyctask 작성
     private class menuAsycTask extends AsyncTask<Integer, Void, String>{
         @Override
         protected String doInBackground(Integer... strings) {
@@ -241,7 +256,7 @@ public class Main_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            TextView resultText = (TextView) findViewById(R.id.test_text);
+
             ArrayList<ItemVO> menuList = new ArrayList<>();
 
             try {
@@ -261,25 +276,57 @@ public class Main_Activity extends AppCompatActivity {
                                 JSONObject section_division = getSection.getJSONObject("division");
                                 int section_division_num = section_division.getInt("divisionNum");
                                 if(divisionNum == section_division_num){
-                                    menuList.add(new section(getSection.getString("sectionName")));
+                                    // Log.d("info", getSection.getString("sectionName") + " : " + getSection.getInt("sectionNum"));
+                                    menuList.add(new section(getSection.getString("sectionName"), getSection.getInt("sectionNum")));
                                 }
                             }
                         }
                     }
                 }
 
+
+
                 if(board != null){
-                    JSONObject boardObj = board.getJSONObject(0);
-                    JSONArray filesArray = boardObj.getJSONArray("files");
-                    JSONObject file = filesArray.getJSONObject(0);
-                    file.getString("filePath");
+                    ArrayList<board> data = new ArrayList<>();
 
-                    // resultText.setText(boardObj.toString());
-                    Log.d("imgPath", StartActivity.CONTEXTPATH + "/resources/upload" + file.getString("filePath"));
+                    for(int i = 0; i < board.length(); i++){
+                        JSONObject boardObj = board.getJSONObject(i);
+                        Log.d("boardObj", boardObj.toString());
 
-                    ImageView img = (ImageView) findViewById(R.id.test_img);
-                    Picasso.with(Main_Activity.this).load(StartActivity.CONTEXTPATH + "/resources/upload" + file.getString("filePath"))
-                            .placeholder(R.drawable.alert).resize(300, 300).into(img);
+                        board boardData = new board();
+                        boardData.boardNum = boardObj.getInt("boardNum");
+                        boardData.boardTotal = boardObj.getInt("boardTotalCount");
+                        boardData.boardView = boardObj.getInt("boardCount");
+                        boardData.boardTitle = boardObj.getString("boardTitle");
+                        boardData.boardRegdate = new Date(boardObj.getLong("boardDate"));
+                        boardData.boardPrice = boardObj.getInt("boardPrice");
+
+                        JSONObject user = boardObj.getJSONObject("clientNum");
+                        boardData.boardWriter = user.getString("name");
+
+
+                        try{
+                            JSONArray filesArray = boardObj.getJSONArray("files");
+
+                            if(filesArray.length() > 0){
+                                JSONObject file = filesArray.getJSONObject(0);
+                                boardData.imgPath = file.getString("filePath");
+                                Log.d("imgPath", boardData.imgPath);
+                            }
+                        }catch (JSONException e){
+                            Log.d("타입에러", e.getMessage());
+                        }
+
+                        data.add(boardData);
+                    }
+
+                    RecyclerView mainRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerView);
+
+                    boardAdapter board_adapter = new boardAdapter(data);
+                    mainRecyclerView.setAdapter(board_adapter);
+
+                    GridLayoutManager boardManager = new GridLayoutManager(Main_Activity.this, 2);
+                    mainRecyclerView.setLayoutManager(boardManager);
 
                 }
 
@@ -292,6 +339,98 @@ public class Main_Activity extends AppCompatActivity {
 
             navRecyclerView.setAdapter(menuAdapter);
             navRecyclerView.setLayoutManager(new LinearLayoutManager(Main_Activity.this));
+        }
+    }
+
+    private class board{
+        int boardNum;
+        String imgPath;
+        int boardTotal;
+        int boardView;
+        String boardTitle;
+        Date boardRegdate;
+        int boardPrice;
+        String boardWriter;
+
+        @Override
+        public String toString() {
+            return boardNum + " : " + imgPath + " : " + boardTotal + " : " + boardView + " : " + boardTitle + " : "
+                    + boardRegdate + " : " + boardPrice + boardWriter;
+        }
+    }
+
+    private class boardHolder extends RecyclerView.ViewHolder{
+        ImageView boardImg;
+        TextView boardTotal;
+        TextView boardView;
+        TextView boardTitle;
+        TextView boardRegdate;
+        TextView boardPrice;
+        TextView boardWriter;
+        TextView showOrder;
+
+        public boardHolder(View itemView) {
+            super(itemView);
+            this.boardImg = itemView.findViewById(R.id.board_img);
+            this.boardTotal = itemView.findViewById(R.id.board_total);
+            this.boardView = itemView.findViewById(R.id.board_view);
+            this.boardTitle = itemView.findViewById(R.id.board_title);
+            this.boardRegdate = itemView.findViewById(R.id.board_date);
+            this.boardPrice = itemView.findViewById(R.id.board_price);
+            this.boardWriter = itemView.findViewById(R.id.board_writer);
+            this.showOrder = itemView.findViewById(R.id.board_show_order);
+
+        }
+    }
+
+    private class boardAdapter extends RecyclerView.Adapter<boardHolder>{
+        ArrayList<board> data;
+
+        public boardAdapter(ArrayList<board> data) {
+            this.data = data;
+        }
+
+        @Override
+        public boardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.main_board_layout, parent, false);
+            return new boardHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(boardHolder holder, final int position) {
+            board board = data.get(position);
+            Log.d("path : ", StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath );
+
+            Picasso.with(Main_Activity.this).load(StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath)
+                    .placeholder(R.drawable.basicimg).into(holder.boardImg);
+
+            holder.boardTotal.setText("총 주문수량: " + board.boardTotal);
+            holder.boardView.setText("조회수: " + board.boardView);
+            holder.boardTitle.setText("제목: " + board.boardTitle);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String turnForm = dateFormat.format(board.boardRegdate);
+
+            holder.boardRegdate.setText("등록날짜: " + turnForm);
+
+            DecimalFormat priceFormat = new DecimalFormat("#,##0");
+            String turnPrice = priceFormat.format(board.boardPrice);
+
+            holder.boardPrice.setText("가격: " + turnPrice + " 원");
+            holder.boardWriter.setText("등록: " + board.boardWriter);
+
+            holder.showOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(Main_Activity.this, data.get(position).boardNum + "", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
         }
     }
 
