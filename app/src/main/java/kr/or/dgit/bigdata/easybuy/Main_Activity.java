@@ -487,6 +487,11 @@ public class Main_Activity extends AppCompatActivity {
 
         }else{
             relativeLayout.removeView(mainRecyclerView);
+
+            if(noneBoardTextView != null){
+                relativeLayout.removeView(noneBoardTextView);
+            }
+
             TextView textView = new TextView(Main_Activity.this);
             textView.setId(R.id.noneBoardText);
             textView.setText("등록된 게시물이 존재하지 않습니다.");
