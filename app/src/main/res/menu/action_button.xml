@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:icon="@drawable/board_icon"
+            android:id="@+id/actionBtn_board"
+            android:title="Actions"
+            app:showAsAction="always"/>
+
+        <item
+            android:icon="@drawable/order_icon"
+            android:id="@+id/actionBtn_order"
+            android:title="Actions"
+            app:showAsAction="always"/>
+
+        <item
+            android:icon="@drawable/static_icon"
+            android:id="@+id/actionBtn_static"
+            android:title="Actions"
+            app:showAsAction="always"/>
+
+</menu>

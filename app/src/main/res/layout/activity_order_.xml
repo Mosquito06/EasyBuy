@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kr.or.dgit.bigdata.easybuy.Order_Activity">
+
+    <LinearLayout
+        android:id="@+id/order_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/order_all_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackColor"
+            android:textColor="@color/whiteTextColor"
+            android:text="전체보기"
+            android:textSize="11sp"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:layout_margin="5dp"
+            android:onClick="setOrderByBtn"/>
+
+        <Button
+            android:id="@+id/order_ready_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackColor"
+            android:textColor="@color/whiteTextColor"
+            android:text="배송전"
+            android:textSize="11sp"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:id="@+id/order_ing_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackColor"
+            android:textColor="@color/whiteTextColor"
+            android:text="배송준비"
+            android:textSize="11sp"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:id="@+id/order_complete_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackColor"
+            android:textColor="@color/whiteTextColor"
+            android:text="배송완료"
+            android:textSize="11sp"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"/>
+
+        <Button
+            android:id="@+id/order_cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blackColor"
+            android:textColor="@color/whiteTextColor"
+            android:text="취소주문"
+            android:textSize="11sp"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/order_recyclerView"
+        android:layout_below="@+id/order_btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

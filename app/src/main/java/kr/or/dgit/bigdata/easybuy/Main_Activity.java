@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class Main_Activity extends AppCompatActivity {
     NavigationView nav;
     ActionBarDrawerToggle toggle;
     RecyclerView navRecyclerView;
+    int userNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +77,13 @@ public class Main_Activity extends AppCompatActivity {
         SharedPreferences loginPref = getSharedPreferences("login_info", Context.MODE_PRIVATE);
         String name = loginPref.getString("userName", "none");
         String id = loginPref.getString("userId", "none");
-        int userNum = loginPref.getInt("userNum", 0);
+        userNum = loginPref.getInt("userNum", 0);
 
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");
 
-        toolbarText = (TextView) findViewById(R.id.toolbar_text);
-        toolbarText.setText(name + "님");
+        /*toolbarText = (TextView) findViewById(R.id.toolbar_text);
+        toolbarText.setText(name + "님");*/
 
         setSupportActionBar(toolbar);
 
@@ -92,31 +94,56 @@ public class Main_Activity extends AppCompatActivity {
 
         navName = (TextView) findViewById(R.id.nav_name);
         navId = (TextView) findViewById(R.id.nav_id);
-        navName.setText(name +"님");
+        navName.setText(name + "님");
         navId.setText(id);
 
         new menuAsycTask().execute(userNum);
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.action_button, menu);
+
+        return true;
+    }
+
     // nav 버튼 활성화
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        if (item.getItemId() == R.id.actionBtn_board) {
+            new menuAsycTask().execute(userNum);
+
+        } else if (item.getItemId() == R.id.actionBtn_order) {
+            Intent intent = new Intent();
+            intent.setClass(Main_Activity.this, Order_Activity.class);
+            intent.putExtra("userNum", userNum);
+            intent.putExtra("call", Order_Activity.ALL_ORDER_ACTIVITY);
+
+            startActivity(intent);
+
+        } else if (item.getItemId() == R.id.actionBtn_static) {
+
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     // memu의 데이터를 담을 클래스 생성
-    private abstract class ItemVO{
+    private abstract class ItemVO {
         public static final int TYPE_DIVISION = 0;
         public static final int TYPE_SECTION = 1;
+
         abstract int getType();
     }
 
-    private class division extends ItemVO{
+    private class division extends ItemVO {
         String divisionName;
 
         public division(String divisionName) {
@@ -129,7 +156,7 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class section extends ItemVO{
+    private class section extends ItemVO {
         String sectionName;
         int sectionNum;
 
@@ -146,7 +173,7 @@ public class Main_Activity extends AppCompatActivity {
 
 
     // recycleview viewholder 작성
-    private class divisionViewHolder extends RecyclerView.ViewHolder{
+    private class divisionViewHolder extends RecyclerView.ViewHolder {
         TextView divisionText;
 
 
@@ -156,7 +183,7 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class sectionViewHolder extends RecyclerView.ViewHolder{
+    private class sectionViewHolder extends RecyclerView.ViewHolder {
         TextView sectionText;
 
         public sectionViewHolder(View itemView) {
@@ -165,8 +192,8 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    // recycleview adapter 작성
-    private class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    // menu recycleview adapter 작성
+    private class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ArrayList<ItemVO> menu;
 
 
@@ -182,10 +209,10 @@ public class Main_Activity extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if(viewType == ItemVO.TYPE_DIVISION){
+            if (viewType == ItemVO.TYPE_DIVISION) {
                 View view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.division_layout, parent, false);
                 return new divisionViewHolder(view);
-            }else{
+            } else {
                 View view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.section_layout, parent, false);
                 return new sectionViewHolder(view);
             }
@@ -194,12 +221,12 @@ public class Main_Activity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewholder, final int position) {
             ItemVO item = menu.get(position);
-            if(item.getType() == ItemVO.TYPE_DIVISION){
+            if (item.getType() == ItemVO.TYPE_DIVISION) {
                 divisionViewHolder holder = (divisionViewHolder) viewholder;
                 division division = (division) item;
                 holder.divisionText.setText(division.divisionName);
 
-            }else{
+            } else {
                 sectionViewHolder holder = (sectionViewHolder) viewholder;
                 section section = (section) item;
                 holder.sectionText.setText(section.sectionName);
@@ -208,10 +235,10 @@ public class Main_Activity extends AppCompatActivity {
                     public void onClick(View v) {
                         // 메뉴 이벤트 설정
                         ItemVO item = menu.get(position);
-                        if(item.getType() == ItemVO.TYPE_SECTION){
+                        if (item.getType() == ItemVO.TYPE_SECTION) {
                             section section = (section) item;
                             new setBoardAsynTask().execute(section.sectionNum);
-                            if(drawer.isDrawerOpen(GravityCompat.START)){
+                            if (drawer.isDrawerOpen(GravityCompat.START)) {
                                 drawer.closeDrawer(GravityCompat.START);
                             }
                         }
@@ -228,7 +255,7 @@ public class Main_Activity extends AppCompatActivity {
     }
 
     // 로그인 시 데이터를 가져오기 위한 asyctask 작성
-    private class menuAsycTask extends AsyncTask<Integer, Void, String>{
+    private class menuAsycTask extends AsyncTask<Integer, Void, String> {
         @Override
         protected String doInBackground(Integer... integers) {
             String MappginPath = StartActivity.CONTEXTPATH + "/android/menu/";
@@ -247,18 +274,18 @@ public class Main_Activity extends AppCompatActivity {
                 JSONArray division = obj.getJSONArray("division");
                 JSONArray section = obj.getJSONArray("section");
                 JSONArray board = obj.getJSONArray("board");
-                if(division != null){
-                    for(int i = 0; i < division.length(); i++){
+                if (division != null) {
+                    for (int i = 0; i < division.length(); i++) {
                         JSONObject getDivision = division.getJSONObject(i);
                         int divisionNum = getDivision.getInt("divisionNum");
                         menuList.add(new division(getDivision.getString("divisionName")));
 
-                        if(section != null){
-                            for(int ii = 0; ii < section.length(); ii++){
+                        if (section != null) {
+                            for (int ii = 0; ii < section.length(); ii++) {
                                 JSONObject getSection = section.getJSONObject(ii);
                                 JSONObject section_division = getSection.getJSONObject("division");
                                 int section_division_num = section_division.getInt("divisionNum");
-                                if(divisionNum == section_division_num){
+                                if (divisionNum == section_division_num) {
                                     menuList.add(new section(getSection.getString("sectionName"), getSection.getInt("sectionNum")));
                                 }
                             }
@@ -280,7 +307,8 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class board{
+    // 메인 recyclerView 작업
+    private class board {
         int boardNum;
         String imgPath;
         int boardTotal;
@@ -297,7 +325,7 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class boardHolder extends RecyclerView.ViewHolder{
+    private class boardHolder extends RecyclerView.ViewHolder {
         ImageView boardImg;
         TextView boardTotal;
         TextView boardView;
@@ -321,7 +349,7 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class boardAdapter extends RecyclerView.Adapter<boardHolder>{
+    private class boardAdapter extends RecyclerView.Adapter<boardHolder> {
         ArrayList<board> data;
 
         public boardAdapter(ArrayList<board> data) {
@@ -337,7 +365,7 @@ public class Main_Activity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(boardHolder holder, final int position) {
             board board = data.get(position);
-            Log.d("path : ", StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath );
+            Log.d("path : ", StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath);
 
             Picasso.with(Main_Activity.this).load(StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath)
                     .placeholder(R.drawable.basicimg).into(holder.boardImg);
@@ -360,7 +388,12 @@ public class Main_Activity extends AppCompatActivity {
             holder.showOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(Main_Activity.this, data.get(position).boardNum + "", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setClass(Main_Activity.this, Order_Activity.class);
+                    intent.putExtra("boardNum", data.get(position).boardNum);
+                    intent.putExtra("call", Order_Activity.ORDER_ACTIVITY);
+
+                    startActivity(intent);
 
                 }
             });
@@ -372,7 +405,9 @@ public class Main_Activity extends AppCompatActivity {
         }
     }
 
-    private class setBoardAsynTask extends AsyncTask<Integer ,Void, String>{
+
+    // 버튼 이벤트에 따른 데이터를 가져오는 AsynTask
+    private class setBoardAsynTask extends AsyncTask<Integer, Void, String> {
         @Override
         protected String doInBackground(Integer... integers) {
             String MappginPath = StartActivity.CONTEXTPATH + "/android/board/";
@@ -402,24 +437,24 @@ public class Main_Activity extends AppCompatActivity {
         BufferedReader br = null;
         HttpURLConnection connection = null;
         String line = null;
-        try{
+        try {
             URL url = new URL(MappginPath + value);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            if(connection != null){
-                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+            if (connection != null) {
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 }
             }
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 br.close();
                 connection.disconnect();
@@ -436,8 +471,8 @@ public class Main_Activity extends AppCompatActivity {
         TextView noneBoardTextView = (TextView) findViewById(R.id.noneBoardText);
 
 
-        if(board.length() > 0){
-            if(mainRecyclerView == null){
+        if (board.length() > 0) {
+            if (mainRecyclerView == null) {
                 relativeLayout.removeView(noneBoardTextView);
 
                 mainRecyclerView = new RecyclerView(Main_Activity.this);
@@ -452,9 +487,9 @@ public class Main_Activity extends AppCompatActivity {
 
             ArrayList<Main_Activity.board> data = new ArrayList<>();
 
-            for(int i = 0; i < board.length(); i++){
+            for (int i = 0; i < board.length(); i++) {
                 JSONObject boardObj = board.getJSONObject(i);
-                Log.d("boardObj", boardObj.toString());
+
 
                 Main_Activity.board boardData = new board();
                 boardData.boardNum = boardObj.getInt("boardNum");
@@ -468,15 +503,15 @@ public class Main_Activity extends AppCompatActivity {
                 boardData.boardWriter = user.getString("name");
 
 
-                try{
+                try {
                     JSONArray filesArray = boardObj.getJSONArray("files");
 
-                    if(filesArray.length() > 0){
+                    if (filesArray.length() > 0) {
                         JSONObject file = filesArray.getJSONObject(0);
                         boardData.imgPath = file.getString("filePath");
-                        Log.d("imgPath", boardData.imgPath);
+
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     Log.d("타입에러", e.getMessage());
                 }
 
@@ -489,10 +524,10 @@ public class Main_Activity extends AppCompatActivity {
             GridLayoutManager boardManager = new GridLayoutManager(Main_Activity.this, 2);
             mainRecyclerView.setLayoutManager(boardManager);
 
-        }else{
+        } else {
             relativeLayout.removeView(mainRecyclerView);
 
-            if(noneBoardTextView != null){
+            if (noneBoardTextView != null) {
                 relativeLayout.removeView(noneBoardTextView);
             }
 

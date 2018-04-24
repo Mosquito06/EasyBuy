@@ -21,14 +21,14 @@
             android:theme="@style/Toolbar"
             app:popupTheme="@style/Theme.AppCompat.Light">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
-                android:fontFamily="@font/nanumsquareroundb"/>
+                android:fontFamily="@font/nanumsquareroundb"/>-->
 
 
         </android.support.v7.widget.Toolbar>

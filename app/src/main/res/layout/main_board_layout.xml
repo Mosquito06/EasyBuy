@@ -7,7 +7,6 @@
 
     <ImageView
         android:id="@+id/board_img"
-        android:src="@drawable/kl"
         android:layout_width="160dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"

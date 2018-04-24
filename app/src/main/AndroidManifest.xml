@@ -20,8 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main_Activity"
-            android:theme="@style/mainStyle"></activity>
+        <activity
+            android:name=".Main_Activity"
+            android:theme="@style/mainStyle" />
+        <activity android:name=".Order_Activity"></activity>
     </application>
 
 </manifest>
