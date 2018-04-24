@@ -1,5 +1,8 @@
 package kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import kr.or.dgit.bigdata.easybuy.Main_Activity;
 import kr.or.dgit.bigdata.easybuy.R;
 
 /**
@@ -60,8 +64,16 @@ public class LogoFragment extends Fragment implements Animation.AnimationListene
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        getActivity().getSupportFragmentManager()
-                .beginTransaction().replace(R.id.mainLayoutFrame, new LoginFragment()).commit();
+        SharedPreferences loginPref = getActivity().getSharedPreferences("login_info", Context.MODE_PRIVATE);
+        String userId = loginPref.getString("userId", null);
+        if(userId != null){
+            Intent intent = new Intent();
+            intent.setClass(getActivity(), Main_Activity.class);
+            startActivity(intent);
+        }else{
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction().replace(R.id.mainLayoutFrame, new LoginFragment()).commit();
+        }
     }
 
     @Override

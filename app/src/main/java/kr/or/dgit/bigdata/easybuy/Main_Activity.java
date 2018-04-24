@@ -1,6 +1,8 @@
 package kr.or.dgit.bigdata.easybuy;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -69,9 +71,11 @@ public class Main_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main_);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("userName");
-        String id = intent.getStringExtra("userId");
-        int userNum = intent.getIntExtra("userNum", 0);
+
+        SharedPreferences loginPref = getSharedPreferences("login_info", Context.MODE_PRIVATE);
+        String name = loginPref.getString("userName", "none");
+        String id = loginPref.getString("userId", "none");
+        int userNum = loginPref.getInt("userNum", 0);
 
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("");

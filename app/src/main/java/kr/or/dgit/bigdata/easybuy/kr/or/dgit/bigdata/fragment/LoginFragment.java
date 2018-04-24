@@ -1,8 +1,10 @@
 package kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -161,13 +163,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if(loginUser != null){
+                                SharedPreferences loginPref = getActivity().getSharedPreferences("login_info", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor userPref =  loginPref.edit();
+
+                                userPref.putInt("userNum", loginUser.clientNum);
+                                userPref.putString("userId", loginUser.id);
+                                userPref.putString("userName", loginUser.name);
+                                userPref.putString("userPhone", loginUser.phone);
+                                userPref.putString("userAddress", loginUser.address);
+                                userPref.commit();
+
+
                                 Intent intent = new Intent();
                                 intent.setClass(getActivity(), Main_Activity.class);
-                                intent.putExtra("userNum", loginUser.clientNum);
-                                intent.putExtra("userId", loginUser.id);
-                                intent.putExtra("userName", loginUser.name);
-                                intent.putExtra("userPhone", loginUser.phone);
-                                intent.putExtra("userAddress", loginUser.address);
                                 startActivity(intent);
                             }
                         }
