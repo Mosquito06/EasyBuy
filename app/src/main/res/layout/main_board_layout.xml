@@ -106,6 +106,7 @@
         android:textSize="10sp"
         android:text="주문내역 확인 >>> "
         android:fontFamily="@font/nanumsquareroundb"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
 </RelativeLayout>

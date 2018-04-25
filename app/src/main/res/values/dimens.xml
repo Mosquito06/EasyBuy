@@ -1,4 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="textSize">13sp</dimen>
+    <integer name="animation_dur">1000</integer>
+    
 </resources>

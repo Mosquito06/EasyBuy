@@ -1,6 +1,8 @@
 package kr.or.dgit.bigdata.easybuy;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Matrix;
@@ -12,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -98,6 +103,29 @@ public class Main_Activity extends AppCompatActivity {
         navId.setText(id);
 
         new menuAsycTask().execute(userNum);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(Main_Activity.this);
+            builder.setIcon(R.drawable.alert);
+            builder.setTitle("Alert");
+            builder.setMessage("정말로 종료하시겠습니까?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Main_Activity.this.finishAffinity();
+                }
+            });
+            builder.setNegativeButton("NO", null);
+            builder.setCancelable(false);
+            builder.create().show();
+        }
 
     }
 
@@ -524,6 +552,8 @@ public class Main_Activity extends AppCompatActivity {
             GridLayoutManager boardManager = new GridLayoutManager(Main_Activity.this, 2);
             mainRecyclerView.setLayoutManager(boardManager);
 
+            runAnimation(mainRecyclerView);
+
         } else {
             relativeLayout.removeView(mainRecyclerView);
 
@@ -544,5 +574,16 @@ public class Main_Activity extends AppCompatActivity {
 
         }
     }
+
+    public static void runAnimation(RecyclerView recyclerView) {
+        Context context = recyclerView.getContext();
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_full_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+
+    }
+
 
 }

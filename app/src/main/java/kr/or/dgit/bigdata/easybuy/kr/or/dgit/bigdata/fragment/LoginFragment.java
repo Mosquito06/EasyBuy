@@ -34,7 +34,6 @@ import java.net.URL;
 import kr.or.dgit.bigdata.easybuy.Main_Activity;
 import kr.or.dgit.bigdata.easybuy.R;
 import kr.or.dgit.bigdata.easybuy.StartActivity;
-import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.dto.User;
 
 /**
  * Created by DGIT3-12 on 2018-04-18.
@@ -198,6 +197,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             return builder;
         }
 
+    }
+
+    private class User {
+        public int clientNum;
+        public String id;
+        public String name;
+        public String email;
+        public String phone;
+        public String homeTel;
+        public String address;
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "clientNum=" + clientNum +
+                    ", id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", email='" + email + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", homeTel='" + homeTel + '\'' +
+                    ", address='" + address + '\'' +
+                    '}';
+        }
     }
 
 }

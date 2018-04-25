@@ -37,13 +37,13 @@
         android:id="@+id/loginBtn"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="#000"
+        android:background="@drawable/ripple_effect"
         android:layout_below="@+id/loginInpugPw"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="로그인"
         android:fontFamily="@font/nanumsquareroundb"
-        android:textColor="@color/whiteTextColor"/>
+        android:textColor="@color/whiteTextColor" />
 
     <TextView
         android:id="@+id/resultText"

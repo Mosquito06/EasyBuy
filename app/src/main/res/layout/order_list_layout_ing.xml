@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="330dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_margin="10dp"
+    android:layout_gravity="center_horizontal">
 
     <TableRow
         android:background="@color/grayBackColor"
@@ -12,8 +13,7 @@
             android:text="주문번호"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -21,8 +21,7 @@
             android:text="주문상품"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="2"
             android:gravity="center"/>
 
@@ -31,8 +30,7 @@
             android:text="주문날짜"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -40,8 +38,7 @@
             android:text="주문수량"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -49,8 +46,7 @@
             android:text="가격"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="2"
             android:gravity="center"/>
     </TableRow>
@@ -63,8 +59,7 @@
             android:text="1"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -73,9 +68,8 @@
             android:text="토마토사세요"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:maxWidth="10dp"
-            android:layout_marginRight="10dp"
             android:layout_weight="2"
             android:gravity="center"/>
 
@@ -85,8 +79,7 @@
             android:text="2018-04-05"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -95,8 +88,7 @@
             android:text="3"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -105,8 +97,7 @@
             android:text="50000"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="2"
             android:gravity="center"/>
     </TableRow>
@@ -118,8 +109,7 @@
             android:text="받는사람"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -127,9 +117,8 @@
             android:text="받는주소"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="5"
+            android:textSize="11sp"
+            android:layout_weight="4"
             android:gravity="center"/>
 
 
@@ -137,17 +126,15 @@
             android:text="연락처"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:textSize="11sp"
+            android:layout_weight="2"
             android:gravity="center"/>
 
         <TextView
             android:text="주문상태"
             android:textColor="@color/whiteTextColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="12sp"
-            android:layout_marginRight="10dp"
+            android:textSize="11sp"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -156,15 +143,16 @@
     <TableRow
         android:padding="5dp"
         android:gravity="center_vertical">
+
         <TextView
             android:id="@+id/order_recipient_text"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:gravity="center"
             android:text="김동환"
             android:textColor="@color/blackColor"
-            android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="11sp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/order_address_text"
@@ -173,7 +161,6 @@
             android:fontFamily="@font/nanumsquareroundb"
             android:textSize="11sp"
             android:maxWidth="10dp"
-            android:layout_marginRight="10dp"
             android:layout_weight="5"
             android:gravity="center"/>
 
@@ -183,22 +170,49 @@
             android:text="010-3634-0396"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:maxWidth="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"/>
 
-        <TextView
+         <TextView
             android:id="@+id/order_status_text"
             android:text="배송전"
             android:textColor="@color/blackColor"
             android:fontFamily="@font/nanumsquareroundb"
             android:textSize="11sp"
-            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:gravity="center"/>
 
     </TableRow>
+
+    <!--<TableRow
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/grayBackColor">
+    </TableRow>-->
+
+    <TableRow
+        android:padding="5dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/order_setComplete_btn"
+            android:text="배송완료"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:textSize="12sp"
+            android:textColor="@color/whiteTextColor"
+            android:background="@drawable/ripple_effect"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"/>
+
+    </TableRow>
+
+    <!--<TableRow
+        android:padding="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/grayBackColor">
+    </TableRow>-->
+
 
 </TableLayout>
