@@ -81,10 +81,20 @@ public class Order_Activity extends AppCompatActivity {
         int call_activity = intent.getIntExtra("call", -1);
 
 
-        if(isUpdate){
-           new setOrderAsynTask().execute(2, orderNum, optionValue);
+        if (isUpdate) {
+                int boardNum;
+                int userNum;
+            if (call_activity != -1 && call_activity == ORDER_ACTIVITY) {
+                boardNum = intent.getIntExtra("boardNum", -1);
+                new setOrderAsynTask().execute(2, orderNum, optionValue, ORDER_ACTIVITY, boardNum);
 
-        }else if (call_activity != -1 && call_activity == ORDER_ACTIVITY) {
+            } else if (call_activity != -1 && call_activity == ALL_ORDER_ACTIVITY) {
+                userNum = intent.getIntExtra("userNum", -1);
+                new setOrderAsynTask().execute(2, orderNum, optionValue, ALL_ORDER_ACTIVITY, userNum);
+
+            }
+
+        } else if (call_activity != -1 && call_activity == ORDER_ACTIVITY) {
             int boardNum = intent.getIntExtra("boardNum", -1);
             new setOrderAsynTask().execute(call_activity, boardNum, optionValue);
 
@@ -107,11 +117,11 @@ public class Order_Activity extends AppCompatActivity {
             if (call_check == ORDER_ACTIVITY) {
                 String MappingPath = StartActivity.CONTEXTPATH + "/android/order/";
                 return getResultString(integers, MappingPath);
-            } else if(call_check == ALL_ORDER_ACTIVITY){
+            } else if (call_check == ALL_ORDER_ACTIVITY) {
                 String MappingPath = StartActivity.CONTEXTPATH + "/android/client/";
                 return getResultString(integers, MappingPath);
-            } else{
-                String MappingPath = StartActivity.CONTEXTPATH + "/android/client/";
+            } else {
+                String MappingPath = StartActivity.CONTEXTPATH + "/android/update/";
                 return getResultString(integers, MappingPath);
             }
         }
@@ -170,11 +180,11 @@ public class Order_Activity extends AppCompatActivity {
 
                         String status = order.orderStatus;
 
-                        if(status.equals("READY")){
+                        if (status.equals("READY")) {
                             order.viewType = 2;
-                        }else if(status.equals("ING")){
+                        } else if (status.equals("ING")) {
                             order.viewType = 1;
-                        }else{
+                        } else {
                             order.viewType = 0;
                         }
 
@@ -216,10 +226,16 @@ public class Order_Activity extends AppCompatActivity {
         StringBuffer sb;
         int btn_option = integers[2];
 
+        if(integers[0] == 2){
+            // 주문번호, 변경옵션, 호출 액티비티 종류, 고객 혹은 게시판 번호
+            sb = getStringBuffer(MappingPath, integers[1], integers[2], integers[3], integers[4]);
+            return sb.toString();
+        }
+
         if (btn_option != -1) {
-            sb = getStringBuffer(MappingPath, integers[1], integers[2]);
+            sb = getStringBuffer(MappingPath, integers[1], integers[2], -1);
         } else {
-            sb = getStringBuffer(MappingPath, integers[1], -1);
+            sb = getStringBuffer(MappingPath, integers[1], -1, -1);
         }
         return sb.toString();
     }
@@ -232,11 +248,18 @@ public class Order_Activity extends AppCompatActivity {
         URL url = null;
 
         try {
-            if (value[1] != -1) {
+
+            if(value[2] != -1){
+                url = new URL(MappingPath + value[0] + "/" + value[1] + "/" + value[2] + "/" + value[3]);
+            }else if (value[1] != -1) {
                 url = new URL(MappingPath + value[0] + "/" + value[1]);
             } else {
                 url = new URL(MappingPath + value[0]);
             }
+
+
+
+
             Log.d("url", url.toString());
 
             connection = (HttpURLConnection) url.openConnection();
@@ -343,51 +366,51 @@ public class Order_Activity extends AppCompatActivity {
         public orderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = null;
 
-            if (viewType == 2){
+            if (viewType == 2) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_layout_before, parent, false);
-            }else if(viewType == 1){
+            } else if (viewType == 1) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_layout_ing, parent, false);
-            }else{
+            } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_layout_after, parent, false);
             }
             return new orderHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(orderHolder holder, int position) {
+        public void onBindViewHolder(orderHolder holder, final int position) {
             orderData order = data.get(position);
+            final int orderNum = order.orderNum;
 
-            if(order.viewType == 2){
+            if (order.viewType == 2) {
                 setCommonHolder(holder, order);
 
                 holder.ingBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        setAsynTask(1, true, orderNum);
                     }
                 });
 
                 holder.completeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        setAsynTask(2, true, orderNum);
                     }
                 });
 
-            }else if(order.viewType == 1){
+            } else if (order.viewType == 1) {
                 setCommonHolder(holder, order);
 
                 holder.completeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        setAsynTask(2, true, orderNum);
                     }
                 });
 
-            }else {
+            } else {
                 setCommonHolder(holder, order);
             }
-
 
 
         }
