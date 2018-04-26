@@ -144,11 +144,12 @@ public class Main_Activity extends AppCompatActivity {
             return true;
         }
 
+        Intent intent = new Intent();
+
         if (item.getItemId() == R.id.actionBtn_board) {
             new menuAsycTask().execute(userNum);
 
         } else if (item.getItemId() == R.id.actionBtn_order) {
-            Intent intent = new Intent();
             intent.setClass(Main_Activity.this, Order_Activity.class);
             intent.putExtra("userNum", userNum);
             intent.putExtra("call", Order_Activity.ALL_ORDER_ACTIVITY);
@@ -156,8 +157,8 @@ public class Main_Activity extends AppCompatActivity {
             startActivity(intent);
 
         } else if (item.getItemId() == R.id.actionBtn_static) {
-
-
+            intent.setClass(Main_Activity.this, Static_Activity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

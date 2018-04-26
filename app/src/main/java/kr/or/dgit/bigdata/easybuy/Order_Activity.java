@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,43 +36,29 @@ public class Order_Activity extends AppCompatActivity {
     public static final int ORDER_ACTIVITY = 0;
     public static final int ALL_ORDER_ACTIVITY = 1;
 
-    Button allBtn;
-    Button readyBtn;
-    Button ingBtn;
-    Button completeBtn;
-    Button cancelBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_);
-
-        allBtn = (Button) findViewById(R.id.order_all_btn);
-        readyBtn = (Button) findViewById(R.id.order_ready_btn);
-        ingBtn = (Button) findViewById(R.id.order_ing_btn);
-        completeBtn = (Button) findViewById(R.id.order_complete_btn);
-        cancelBtn = (Button) findViewById(R.id.order_cancel_btn);
-
         setAsynTask(-1, false, -1);
-
 
     }
 
     public void setOrderByBtn(View view) {
         switch (view.getId()) {
-            case R.id.order_all_btn:
+            case R.id.order_floating_all_btn:
                 setAsynTask(0, false, -1);
                 break;
-            case R.id.order_ready_btn:
+            case R.id.order_floating_ready_btn:
                 setAsynTask(1, false, -1);
                 break;
-            case R.id.order_ing_btn:
+            case R.id.order_floating_ing_btn:
                 setAsynTask(2, false, -1);
                 break;
-            case R.id.order_complete_btn:
+            case R.id.order_floating_complete_btn:
                 setAsynTask(3, false, -1);
                 break;
-            case R.id.order_cancel_btn:
+            case R.id.order_floating_cancel_btn:
                 setAsynTask(4, false, -1);
                 break;
         }
@@ -129,7 +117,8 @@ public class Order_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            RelativeLayout order_main_layout = (RelativeLayout) findViewById(R.id.order_main_relativeLayout);
+            FrameLayout order_main_layout = (FrameLayout) findViewById(R.id.order_main_frameLayout);
+            FrameLayout order_sub_layout = (FrameLayout) findViewById(R.id.order_sub_frameLayout);
             TextView noneOrderTextView = (TextView) findViewById(R.id.noneOrderText);
             RecyclerView order_recyclerView = (RecyclerView) findViewById(R.id.order_recyclerView);
 
@@ -142,7 +131,7 @@ public class Order_Activity extends AppCompatActivity {
                 if (orders.length() == 0) {
 
                     if (order_recyclerView != null) {
-                        order_main_layout.removeView(order_recyclerView);
+                        order_sub_layout.removeView(order_recyclerView);
                     }
 
                     if (noneOrderTextView != null) {
@@ -154,10 +143,11 @@ public class Order_Activity extends AppCompatActivity {
                     textView.setText("접수된 주문이 존재하지 않습니다.");
                     textView.setTextColor(getResources().getColor(R.color.blackColor));
 
-                    RelativeLayout.LayoutParams textViewLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    textViewLayout.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                    textView.setLayoutParams(textViewLayout);
+                    // 자식 뷰가 포함될 부모 뷰의 레이아웃의 params을 사용
+                    FrameLayout.LayoutParams textViewLayout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    textViewLayout.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
 
+                    textView.setLayoutParams(textViewLayout);
                     order_main_layout.addView(textView);
 
 
@@ -195,17 +185,15 @@ public class Order_Activity extends AppCompatActivity {
                         order_main_layout.removeView(noneOrderTextView);
                     }
 
-                    order_main_layout.removeView(order_recyclerView);
+                    order_sub_layout.removeView(order_recyclerView);
 
                     order_recyclerView = new RecyclerView(Order_Activity.this);
                     order_recyclerView.setId(R.id.order_recyclerView);
 
                     RelativeLayout.LayoutParams recyclerViewLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    recyclerViewLayout.addRule(RelativeLayout.BELOW, R.id.order_btn_layout);
-
                     order_recyclerView.setLayoutParams(recyclerViewLayout);
 
-                    order_main_layout.addView(order_recyclerView);
+                    order_sub_layout.addView(order_recyclerView);
 
                     order_recyclerView = (RecyclerView) findViewById(R.id.order_recyclerView);
                     order_recyclerView.setAdapter(new orderAdapter(data));

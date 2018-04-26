@@ -3,26 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/static_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kr.or.dgit.bigdata.easybuy.Order_Activity"
-    android:id="@+id/order_main_frameLayout">
+    tools:context="kr.or.dgit.bigdata.easybuy.Static_Activity">
 
     <FrameLayout
-        android:id="@+id/order_sub_frameLayout"
+        android:id="@+id/static_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/order_recyclerView"
-            android:layout_below="@+id/order_btn_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </FrameLayout>
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/order_floating_menu"
+        android:id="@+id/static_floating_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -34,7 +27,7 @@
         app:menu_colorNormal="@color/mainTextColor"
         app:menu_colorPressed="#555"
         app:menu_colorRipple="@color/blackColor"
-        app:menu_fab_label="옵션을 선택하세요"
+        app:menu_fab_label="차트를 선택하세요"
         app:menu_fab_size="normal"
         app:menu_icon="@drawable/fab_add"
         app:menu_labels_colorNormal="#333"
@@ -60,49 +53,22 @@
         app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/order_floating_all_btn"
+            android:id="@+id/static_floating_pie_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_label="전체보기"
+            app:fab_label="판매비율(PieChart)"
             app:fab_size="mini"
             app:fab_colorNormal="@color/mainTextColor"
-            android:onClick="setOrderByBtn"/>
+            android:onClick="setStaticBtn"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/order_floating_ready_btn"
+            android:id="@+id/static_floating_bar_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_label=" 배송 전 "
+            app:fab_label="매출현황(BarChart)"
             app:fab_size="mini"
             app:fab_colorNormal="@color/mainTextColor"
-            android:onClick="setOrderByBtn"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/order_floating_ing_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="배송준비"
-            app:fab_size="mini"
-            app:fab_colorNormal="@color/mainTextColor"
-            android:onClick="setOrderByBtn"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/order_floating_complete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="배송완료"
-            app:fab_size="mini"
-            app:fab_colorNormal="@color/mainTextColor"
-            android:onClick="setOrderByBtn"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/order_floating_cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_label="취소주문"
-            app:fab_size="mini"
-            app:fab_colorNormal="@color/mainTextColor"
-            android:onClick="setOrderByBtn"/>
+            android:onClick="setStaticBtn"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 

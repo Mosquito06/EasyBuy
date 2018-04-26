@@ -23,7 +23,8 @@
         <activity
             android:name=".Main_Activity"
             android:theme="@style/mainStyle" />
-        <activity android:name=".Order_Activity"></activity>
+        <activity android:name=".Order_Activity" />
+        <activity android:name=".Static_Activity"></activity>
     </application>
 
 </manifest>
