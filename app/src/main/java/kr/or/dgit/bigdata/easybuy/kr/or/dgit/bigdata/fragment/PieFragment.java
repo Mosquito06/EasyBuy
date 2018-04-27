@@ -24,7 +24,7 @@ import kr.or.dgit.bigdata.easybuy.R;
  * Created by KDH on 2018-04-26.
  */
 
-public class PieFragment extends Fragment {
+public class PieFragment extends ChartFragment {
 
     @Nullable
     @Override
@@ -35,20 +35,14 @@ public class PieFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setupPieChart();
-    }
-
-    private void setupPieChart() {
+    protected void setUpChart(ArrayList<staticData> datas) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        for(int i = 1; i <= 5; i++){
-            pieEntries.add(new PieEntry(i, "테스트" + i));
+        for(int i = 0; i < datas.size(); i++){
+            pieEntries.add(new PieEntry(datas.get(i).orderPrice, datas.get(i).boardTitle));
         }
 
         // 추가한 데이터의 출력 파이 색상 및 파이 간 간격 설정
-        PieDataSet dataSet = new PieDataSet(pieEntries, "테스트 중입니다.");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "판매비율");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setSliceSpace(3);
 

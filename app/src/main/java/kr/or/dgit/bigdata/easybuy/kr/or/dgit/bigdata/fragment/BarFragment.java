@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -55,7 +56,7 @@ import kr.or.dgit.bigdata.easybuy.StartActivity;
  * Created by KDH on 2018-04-26.
  */
 
-public class BarFragment extends Fragment {
+public class BarFragment extends ChartFragment {
 
     @Nullable
     @Override
@@ -66,32 +67,19 @@ public class BarFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        SharedPreferences loginPref = getActivity().getSharedPreferences("login_info", Context.MODE_PRIVATE);
-        int userId = loginPref.getInt("userNum", -1);
-        Log.d("userId", userId + "");
-
-        new StaticRequestTask().execute(userId);
-
-        setupBarChart();
-    }
-
-    private void setupBarChart() {
+    protected void setUpChart(ArrayList<staticData> datas) {
         List<BarEntry> barEntries = new ArrayList<>();
-        for(int i = 1; i <= 4; i++){
-            barEntries.add(new BarEntry(i, i*10));
-        }
 
-        int totalGroup = 5; // 총 데이터 수 설정
+        for(int i = 0; i < datas.size(); i++){
+            barEntries.add(new BarEntry(i, datas.get(i).orderPrice));
+        }
 
         List<String> barLegendSet = new ArrayList<>();
-        for(int i = 1; i <= 4; i++){
-            barLegendSet.add("테스트" + i);
+        for(int i = 0; i < datas.size(); i++){
+            barLegendSet.add(datas.get(i).boardTitle);
         }
 
-        BarDataSet dataSet = new BarDataSet(barEntries, "바 차트 테스트중입니다.");
+        BarDataSet dataSet = new BarDataSet(barEntries, "매출현황");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setDrawValues(true); // barchart 상단에 값 표시 옵션
 
@@ -113,78 +101,16 @@ public class BarFragment extends Fragment {
         legend.setYEntrySpace(5);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setGranularity(1.1f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(barLegendSet));
+
+        xAxis.setGranularity(01);
         xAxis.setGranularityEnabled(true);
         xAxis.setCenterAxisLabels(true);
         xAxis.setDrawGridLines(true);
+        xAxis.setCenterAxisLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(barLegendSet));
-
 
         chart.invalidate();
 
     }
-
-
-    private class StaticRequestTask extends AsyncTask<Integer, Void, String> {
-
-        @Override
-        protected String doInBackground(Integer... Integer) {
-            StringBuffer sb = new StringBuffer();
-            BufferedReader br = null;
-            HttpURLConnection connection = null;
-            String line = null;
-            try {
-                URL url = new URL(StartActivity.CONTEXTPATH + "/android/static/" + Integer[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                if (connection != null) {
-                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    }
-                }
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    br.close();
-                    connection.disconnect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return sb.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject obj = new JSONObject(result);
-                JSONArray orders = obj.getJSONArray("orders");
-
-                if(orders.length() == 0){
-                    // 결과가 없을 경우 처리
-                }else{
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class staticData{
-        int boardNum;
-        String boardTitle;
-        int orderPrice;
-    }
-
-
 }
