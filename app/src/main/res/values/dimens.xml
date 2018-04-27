@@ -2,7 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="textSize">13sp</dimen>
     <dimen name="pieTextSize">5sp</dimen>
-    <dimen name="bar_margin">0.8dp</dimen>
+    <dimen name="bar_margin">0.15dp</dimen>
     <integer name="animation_dur">1000</integer>
     
 </resources>
