@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import kr.or.dgit.bigdata.easybuy.R;
 import kr.or.dgit.bigdata.easybuy.StartActivity;
 
 /**
@@ -101,7 +102,8 @@ public abstract class ChartFragment extends Fragment {
                 JSONArray orders = obj.getJSONArray("orders");
 
                 if(orders.length() == 0){
-                    // 결과가 없을 경우 처리
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.static_frame_layout, new EmptyFragment()).commit();
                 }else{
                     ArrayList<staticData> datas = new ArrayList<>();
                     for(int i = 0; i < orders.length(); i++){

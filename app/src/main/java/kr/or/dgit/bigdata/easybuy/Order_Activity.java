@@ -216,19 +216,19 @@ public class Order_Activity extends AppCompatActivity {
 
         if(integers[0] == 2){
             // 주문번호, 변경옵션, 호출 액티비티 종류, 고객 혹은 게시판 번호
-            sb = getStringBuffer(MappingPath, integers[1], integers[2], integers[3], integers[4]);
+            sb = getStringBuffer(MappingPath, "PUT", integers[1], integers[2], integers[3], integers[4]);
             return sb.toString();
         }
 
         if (btn_option != -1) {
-            sb = getStringBuffer(MappingPath, integers[1], integers[2], -1);
+            sb = getStringBuffer(MappingPath, "GET",integers[1], integers[2], -1);
         } else {
-            sb = getStringBuffer(MappingPath, integers[1], -1, -1);
+            sb = getStringBuffer(MappingPath, "GET", integers[1], -1, -1);
         }
         return sb.toString();
     }
 
-    private StringBuffer getStringBuffer(String MappingPath, Integer... value) {
+    private StringBuffer getStringBuffer(String MappingPath, String method, Integer... value) {
         StringBuffer sb = new StringBuffer();
         BufferedReader br = null;
         HttpURLConnection connection = null;
@@ -245,13 +245,8 @@ public class Order_Activity extends AppCompatActivity {
                 url = new URL(MappingPath + value[0]);
             }
 
-
-
-
-            Log.d("url", url.toString());
-
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod(method);
 
             if (connection != null) {
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {

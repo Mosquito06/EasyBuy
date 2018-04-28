@@ -346,11 +346,21 @@ public class Main_Activity extends AppCompatActivity {
         Date boardRegdate;
         int boardPrice;
         String boardWriter;
+        int viewType;
 
         @Override
         public String toString() {
-            return boardNum + " : " + imgPath + " : " + boardTotal + " : " + boardView + " : " + boardTitle + " : "
-                    + boardRegdate + " : " + boardPrice + boardWriter;
+            return "board{" +
+                    "boardNum=" + boardNum +
+                    ", imgPath='" + imgPath + '\'' +
+                    ", boardTotal=" + boardTotal +
+                    ", boardView=" + boardView +
+                    ", boardTitle='" + boardTitle + '\'' +
+                    ", boardRegdate=" + boardRegdate +
+                    ", boardPrice=" + boardPrice +
+                    ", boardWriter='" + boardWriter + '\'' +
+                    ", viewType=" + viewType +
+                    '}';
         }
     }
 
@@ -386,13 +396,46 @@ public class Main_Activity extends AppCompatActivity {
         }
 
         @Override
+        public int getItemViewType(int position) {
+            return data.get(position).viewType;
+        }
+
+        @Override
         public boardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.main_board_layout, parent, false);
+            View view = null;
+            if(viewType == 0){
+                view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.main_board_no_order_layout, parent, false);
+            }else{
+                view = LayoutInflater.from(Main_Activity.this).inflate(R.layout.main_board_layout, parent, false);
+            }
+
             return new boardHolder(view);
         }
 
         @Override
         public void onBindViewHolder(boardHolder holder, final int position) {
+            int viewType = data.get(position).viewType;
+            if(viewType == 0){
+                setCommonBoardHolder(holder, position);
+            }else{
+                setCommonBoardHolder(holder, position);
+
+                holder.showOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setClass(Main_Activity.this, Order_Activity.class);
+                        intent.putExtra("boardNum", data.get(position).boardNum);
+                        intent.putExtra("call", Order_Activity.ORDER_ACTIVITY);
+
+                        startActivity(intent);
+
+                    }
+                });
+            }
+        }
+
+        private void setCommonBoardHolder(boardHolder holder, int position) {
             board board = data.get(position);
             Log.d("path : ", StartActivity.CONTEXTPATH + "/resources/upload" + board.imgPath);
 
@@ -413,19 +456,6 @@ public class Main_Activity extends AppCompatActivity {
 
             holder.boardPrice.setText("가격: " + turnPrice + " 원");
             holder.boardWriter.setText("등록: " + board.boardWriter);
-
-            holder.showOrder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setClass(Main_Activity.this, Order_Activity.class);
-                    intent.putExtra("boardNum", data.get(position).boardNum);
-                    intent.putExtra("call", Order_Activity.ORDER_ACTIVITY);
-
-                    startActivity(intent);
-
-                }
-            });
         }
 
         @Override
@@ -531,6 +561,11 @@ public class Main_Activity extends AppCompatActivity {
                 JSONObject user = boardObj.getJSONObject("clientNum");
                 boardData.boardWriter = user.getString("name");
 
+                if(user.getInt("clientNum") == userNum){
+                    boardData.viewType = 1;
+                }else{
+                    boardData.viewType = 0;
+                }
 
                 try {
                     JSONArray filesArray = boardObj.getJSONArray("files");
