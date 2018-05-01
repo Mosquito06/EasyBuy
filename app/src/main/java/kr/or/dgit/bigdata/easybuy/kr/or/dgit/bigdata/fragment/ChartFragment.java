@@ -97,6 +97,8 @@ public abstract class ChartFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            Log.d("result", result.toString());
+
             try {
                 JSONObject obj = new JSONObject(result);
                 JSONArray orders = obj.getJSONArray("orders");
