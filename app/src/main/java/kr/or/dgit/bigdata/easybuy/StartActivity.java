@@ -9,7 +9,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import kr.or.dgit.bigdata.easybuy.kr.or.dgit.bigdata.fragment.LogoFragment;
 
 public class StartActivity extends AppCompatActivity{
-    public static final String CONTEXTPATH = "http://192.168.0.8:8080/saproject";
+    public static final String CONTEXTPATH = "http://skykim10908.cafe24.com/SA_Project";
 
 
     @Override
